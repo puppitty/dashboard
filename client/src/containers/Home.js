@@ -21,12 +21,11 @@ class Home extends Component {
   articleSearch = event => {
     event.preventDefault();
     API.nytSearch({
-      q: this.state.q
+      // q: this.state.q
     }).then(res => {
       console.log(res.data);
       this.setState({
-        articles: res.data.response.docs,
-        q: ""
+        articles: res.data.response.docs
       })
     })
       .catch(err => console.log(err))
@@ -59,21 +58,9 @@ class Home extends Component {
 
             {/* Form for article search */}
             <div className="col-4">
-              <h2>Search for Articles</h2>
-              <form>
-                <div className="form-group">
-                  <input
-                    name="q"
-                    value={this.state.q}
-                    placeholder="Search for an article topic"
-                    type="text"
-                    onChange={this.handleOnChange}
-                    className="form-control mb-2" />
-                  <button type="submit" className="btn btn-block btn-success" style={{ cursor: 'pointer' }} onClick={this.articleSearch}>
-                    Submit
-                  </button>
-                </div>
-              </form>
+              <h2>Latest Articles</h2>
+              {this.articleSearch}
+
             </div>
 
             {/* Article result container */}

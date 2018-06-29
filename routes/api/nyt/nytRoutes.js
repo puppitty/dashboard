@@ -8,13 +8,13 @@ router
   .route("/")
   .get(function (req, res) {
     console.log(req.query);
-    
+
     axios
-      .get(`https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=${process.env.nytAPI}`, {params: req.query})
+      .get(`https://api.nytimes.com/svc/topstories/v2/home.json?api-key=${process.env.nytAPI}`)
       .then(function (articleData) {
         res.json(articleData.data)
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.log(err);
         res.json(err);
       });
