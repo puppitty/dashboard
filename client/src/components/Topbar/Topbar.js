@@ -8,7 +8,6 @@ const Topbar = props => (
 
   </div>
 
-
 )
 
 export default Topbar;

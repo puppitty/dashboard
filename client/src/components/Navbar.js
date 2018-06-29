@@ -1,9 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import Hero from "../components/Hero";
+// import Hero from "../components/Hero";
 
-<Hero backgroundImage="./assets/images/SunsetRidge.jpg">
-</Hero>
+// <Hero backgroundImage="./assets/images/SunsetRidge.jpg">
+// </Hero>
 
 const Navbar = () => (
   <nav className="navbar navbar-expand-lg navbar-light bg-light">
