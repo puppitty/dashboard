@@ -1,31 +1,42 @@
-const express = require("express");
-const path = require("path");
-const bodyParser = require("body-parser");
-const routes = require("./routes");
-const mongoose = require("mongoose");
-const PORT = process.env.PORT || 3001;
-const app = express();
+const express = require('express')
+const mongoose = require('mongoose')
+const users = require('./routes/api/users')
+const profile = require('./routes/api/profile')
+const posts = require('./routes/api/posts')
+const bodyParser = require('body-parser')
+const passport = require('passport')
 
-// Define middleware here
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
-// Serve up static assets (usually on heroku)
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
+const port = process.env.PORT || 5000
+const app = express()
+
+//Body parser middleware
+app.use(bodyParser.urlencoded({extended:false}))
+app.use(bodyParser.json())
+
+const db = require('./config/keys').MONGODB_URI;
+//connect to mongodb
+mongoose
+    .connect(db)
+    .then(() => console.log('MongoDB connected successfully'))
+    .catch(err => console.log(err))
+
+//passport middleware
+app.use(passport.initialize())
+//passport config
+require('./config/passport')(passport)
+
+
+
+//Use Routes
+app.use('/api/users', users)
+app.use('/api/profile', profile)
+app.use('/api/posts', posts)
+
+if(process.env.NODE_ENV==="production") {
+    app.use(express.static('client/build'))
+    app.get('*', (req,res) => {
+        res.sendFile(path.resolve(__dirname,'client','build','index.html'))
+    })
 }
-
-// Define API routes here
-app.use(routes);
-
-// Send every other request to the React app
-// Define any API routes before this runs
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "./client/build/index.html"));
-});
-
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/nytreact");
-
-app.listen(PORT, () => {
-  console.log(`🌎 ==> Server now on port ${PORT}!`);
-});
+app.listen(port, () => console.log(`Server running on port ${port}.....`))
